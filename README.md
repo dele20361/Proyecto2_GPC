@@ -1,2 +1,2 @@
-# Laboratorio 3
+# Proyecto 2
 ## Gráficas por computador
