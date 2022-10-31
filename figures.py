@@ -1,5 +1,8 @@
 import numpy as np
 
+# Librería matemática
+import math_lib as ml
+
 WHITE = (1,1,1)
 BLACK = (0,0,0)
 
@@ -32,8 +35,8 @@ class Sphere(object):
         self.material = material
 
     def ray_intersect(self, orig, dir):
-        L = np.subtract(self.center, orig)
-        tca = np.dot(L, dir)
+        L = ml.subtract(self.center, orig)
+        tca = ml.dot(L, dir)
         d = (np.linalg.norm(L) ** 2 - tca ** 2) ** 0.5
 
         if d > self.radius:
@@ -51,11 +54,11 @@ class Sphere(object):
         
         # P = O + t0 * D
         P = np.add(orig, t0 * np.array(dir))
-        normal = np.subtract(P, self.center)
+        normal = ml.subtract(P, self.center)
         normal = normal / np.linalg.norm(normal)
 
-        u = 1 - ((np.arctan2(normal[2], normal[0]) / (2 * np.pi)) + 0.5)
-        v = np.arccos(-normal[1]) / np.pi
+        u = 1 - ((np.arctan2(normal[2], normal[0]) / (2 * ml.pi())) + 0.5)
+        v = np.arccos(-normal[1]) / ml.pi()
 
         uvs = (u,v)
 
@@ -74,8 +77,8 @@ class Donut(object):
         self.material = material
 
     def ray_intersect(self, orig, dir):
-        L = np.subtract(self.center, orig)
-        tca = np.dot(L, dir)
+        L = ml.subtract(self.center, orig)
+        tca = ml.dot(L, dir)
         d = (np.linalg.norm(L) ** 2 - tca ** 2) ** 0.5
 
         # Coloring
@@ -97,7 +100,7 @@ class Donut(object):
         
         # P = O + t0 * D
         P = np.add(orig, t0 * np.array(dir))
-        normal = np.subtract(P, self.center)
+        normal = ml.subtract(P, self.center)
         normal = normal / np.linalg.norm(normal)
 
         u = 1 - ((np.arctan2(normal[2], normal[0]) / (2 * np.pi)) + 0.5)
@@ -120,10 +123,10 @@ class Plane(object):
 
     def ray_intersect(self, orig, dir):
         # Distancia = (( planePos - origRayo) o normal) / (direccionRayo o normal)
-        denom = np.dot( dir, self.normal)
+        denom = ml.dot( dir, self.normal)
 
         if abs(denom) > 0.0001:
-            num = np.dot( np.subtract(self.position, orig), self.normal)
+            num = ml.dot( ml.subtract(self.position, orig), self.normal)
             t = num / denom
 
             if t > 0:
@@ -150,7 +153,7 @@ class Disk(object):
         if intersect is None:
             return None
 
-        contact = np.subtract(intersect.point, self.plane.position)
+        contact = ml.subtract(intersect.point, self.plane.position)
         contact = np.linalg.norm(contact)
 
         if contact > self.radius:

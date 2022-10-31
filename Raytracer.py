@@ -12,6 +12,7 @@ brick = Material(diffuse = (0.8, 0.3, 0.3), spec = 16)
 grass = Material(diffuse = (0.3, 1.0, 0.3), spec = 64)
 mirror = Material(diffuse = (0.9, 0.9, 0.9), spec = 64, matType = REFLECTIVE)
 glassFloor = Material(diffuse = (0.8, 0.8, 0.8), texture = Texture("chess.bmp"), spec = 64, ior = 1.5, matType = TRANSPARENT)
+# glassFloor = Material(spec = 64, texture = Texture("chess.bmp"), matType= REFLECTIVE)
 glass = Material(diffuse = (0.9, 0.9, 0.9), spec = 64, ior = 1.5, matType = TRANSPARENT)
 glass1 = Material(diffuse = (0.8, 0.8, 0.8), spec = 64, ior = 1.5, matType = REFLECTIVE)
 glass2 = Material(diffuse = (0.8, 0.9, 0.9), spec = 64, ior = 2.417, matType = TRANSPARENT)
@@ -30,7 +31,7 @@ rtx.lights.append( PointLight(point = (-1,-1,1) ))
 rtx.lights.append( DirectionalLight(direction=(0, 10, -20), intensity=0.5))
 
 # Planes for room
-rtx.scene.append( Plane(position = (0,-10,0), normal = (0,1,0), material = glassFloor )) # Floor
+rtx.scene.append( Plane(position = (0,-10,0), normal = (0,1,0), material = mirror )) # Floor
 
 # Figures
 # Spheres
@@ -39,6 +40,8 @@ rtx.scene.append( Sphere(V3(-0.5,-1,-20), 2, glass2)  ) # Centro
 rtx.scene.append( Sphere(V3(3.3,1.5,-10), 1, glass3)  ) # Arriba caja
 rtx.scene.append( Sphere(V3(-6,-1,-10), 0.2, glass3)  ) # Chiquis
 rtx.scene.append( Sphere(V3(6,-1,-12), 0.5, glass2)  ) # Chiquis
+rtx.scene.append( Sphere(V3(7,-1.4,-8), 1.5, glass1)  ) # Afuera
+rtx.scene.append( Sphere(V3(4,-2.4,-5), 0.75, glass3)  ) # Chiquis al lado de afuera
 # Squares
 rtx.scene.append( AABB(position = (3,-0.5,-10), size = (2,2,2), material = glass4))
 rtx.scene.append( AABB(position = (-1.5,-1.1,-5), size = (1,1,1), material = glass5))
@@ -48,7 +51,7 @@ rtx.scene.append( Donut(center=(-1,0.5,-5), externalRadius = 0.85, internalRadiu
 rtx.scene.append( Donut(center=(2.5,2,-4), externalRadius = 0.85, internalRadius = 0.5, material = glass ))
 
 # Disk
-rtx.scene.append( Disk(position = (2,-2,-7), radius = 1.5, normal = (0,1,0), material = mirror ))
+rtx.scene.append( Disk(position = (2,-2,-7), radius = 1.5, normal = (0,1,0), material = glassFloor ))
 
 
 rtx.glRender()
