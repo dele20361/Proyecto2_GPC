@@ -3,16 +3,16 @@ from texture import *
 from figures import *
 from lights import *
 
-width = 412
-height = 312
+width = 600
+height = 512
 
 # Materiales
 stone = Material(diffuse = (0.4, 0.4, 0.4), spec = 8)
 brick = Material(diffuse = (0.8, 0.3, 0.3), spec = 16)
 grass = Material(diffuse = (0.3, 1.0, 0.3), spec = 64)
 mirror = Material(diffuse = (0.9, 0.9, 0.9), spec = 64, matType = REFLECTIVE)
-glassFloor = Material(diffuse = (0.8, 0.8, 0.8), texture = Texture("chess.bmp"), spec = 64, ior = 1.5, matType = TRANSPARENT)
-# glassFloor = Material(spec = 64, texture = Texture("chess.bmp"), matType= REFLECTIVE)
+# glassFloor = Material(diffuse = (0.8, 0.8, 0.8), texture = Texture("chess.bmp"), spec = 64, ior = 1.5, matType = TRANSPARENT)
+glassFloor = Material(spec = 64, texture = Texture("chess.bmp"), matType= REFLECTIVE)
 glass = Material(diffuse = (0.9, 0.9, 0.9), spec = 64, ior = 1.5, matType = TRANSPARENT)
 glass1 = Material(diffuse = (0.8, 0.8, 0.8), spec = 64, ior = 1.5, matType = REFLECTIVE)
 glass2 = Material(diffuse = (0.8, 0.9, 0.9), spec = 64, ior = 2.417, matType = TRANSPARENT)
@@ -45,6 +45,7 @@ rtx.scene.append( Sphere(V3(4,-2.4,-5), 0.75, glass3)  ) # Chiquis al lado de af
 # Squares
 rtx.scene.append( AABB(position = (3,-0.5,-10), size = (2,2,2), material = glass4))
 rtx.scene.append( AABB(position = (-1.5,-1.1,-5), size = (1,1,1), material = glass5))
+rtx.scene.append( AABB(position = (-2.5,-2.5,-5), size = (1,1,1), material = glass1))
 # Donut
 rtx.scene.append( Donut(center=(-1,0.5,-5), externalRadius = 0.85, internalRadius = 0.5, material = glass ))
 rtx.scene.append( Donut(center=(-1,0.5,-5), externalRadius = 0.85, internalRadius = 0.5, material = glass ))

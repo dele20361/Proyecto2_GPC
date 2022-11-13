@@ -84,6 +84,12 @@ def multiplyVectorMatrix(M, v):
 
     return res
 
+def multiply(escalar, vector):
+    ''' Función para la multiplicación de 1 vector por un escalar
+    '''
+    return [i*escalar for i in vector]
+
+
 def cross(a, b):
     '''
         Producto cruz de 2 vectores
@@ -148,11 +154,25 @@ def getMatrixInverse(m):
     ######################################################################################################
 
 def add(X, Y):
+    '''
+        Suma de dos vectores.
+    '''
     result = []
-    for i in range(len(X)):
-        result[i] = X[i] + Y[i]
+    for i in range(min(len(X), len(Y))):
+        result.append(X[i] + Y[i])
+    return result
 
+def add3V(X, Y, Z):
+    '''
+        Suma de dos vectores.
+    '''
+    result = []
+    for i in range(min(len(X), len(Y), len(Z))):
+        result.append(X[i] + Y[i] + Z[i])
     return result
     
 def pi():
     return 3.14159265
+
+def norm(x):
+    return [i/normalize(x) for i in x]

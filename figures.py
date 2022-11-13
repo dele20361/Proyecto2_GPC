@@ -1,7 +1,6 @@
-import numpy as np
-
 # Librería matemática
 import math_lib as ml
+from math import pi, atan2, acos
 
 WHITE = (1,1,1)
 BLACK = (0,0,0)
@@ -35,9 +34,11 @@ class Sphere(object):
         self.material = material
 
     def ray_intersect(self, orig, dir):
+        import numpy as np
         L = ml.subtract(self.center, orig)
         tca = ml.dot(L, dir)
-        d = (np.linalg.norm(L) ** 2 - tca ** 2) ** 0.5
+        dMult= (L[0] **2 + L[1]**2 + L[2]**2)**0.5
+        d = (dMult ** 2 - tca ** 2) ** 0.5
 
         if d > self.radius:
             return None
@@ -53,12 +54,14 @@ class Sphere(object):
             return None
         
         # P = O + t0 * D
-        P = np.add(orig, t0 * np.array(dir))
+
+        multArray = [i*t0 for i in dir]
+        P = ml.add(orig, multArray)
         normal = ml.subtract(P, self.center)
         normal = normal / np.linalg.norm(normal)
-
-        u = 1 - ((np.arctan2(normal[2], normal[0]) / (2 * ml.pi())) + 0.5)
-        v = np.arccos(-normal[1]) / ml.pi()
+        
+        u = 1 - ((atan2(normal[2], normal[0]) / (2 * ml.pi())) + 0.5)
+        v = acos(-normal[1]) / ml.pi()
 
         uvs = (u,v)
 
@@ -77,9 +80,11 @@ class Donut(object):
         self.material = material
 
     def ray_intersect(self, orig, dir):
+        import numpy as np
         L = ml.subtract(self.center, orig)
         tca = ml.dot(L, dir)
-        d = (np.linalg.norm(L) ** 2 - tca ** 2) ** 0.5
+        dMult= (L[0] **2 + L[1]**2 + L[2]**2)**0.5
+        d = (dMult ** 2 - tca ** 2) ** 0.5
 
         # Coloring
         if d > self.externalRadius:
@@ -99,12 +104,13 @@ class Donut(object):
             return None
         
         # P = O + t0 * D
-        P = np.add(orig, t0 * np.array(dir))
+        multArray = [i*t0 for i in dir]
+        P = ml.add(orig, multArray)
         normal = ml.subtract(P, self.center)
         normal = normal / np.linalg.norm(normal)
 
-        u = 1 - ((np.arctan2(normal[2], normal[0]) / (2 * np.pi)) + 0.5)
-        v = np.arccos(-normal[1]) / np.pi
+        u = 1 - ((atan2(normal[2], normal[0]) / (2 * ml.pi())) + 0.5)
+        v = acos(-normal[1]) / ml.pi()
 
         uvs = (u,v)
 
@@ -117,6 +123,7 @@ class Donut(object):
 
 class Plane(object):
     def __init__(self, position, normal,  material):
+        import numpy as np
         self.position = position
         self.normal = normal / np.linalg.norm(normal)
         self.material = material
@@ -131,7 +138,8 @@ class Plane(object):
 
             if t > 0:
                 # P = O + t*D
-                P = np.add(orig, t * np.array(dir))
+                multArray = [i*t for i in dir]
+                P = ml.add(orig, multArray)
                 return Intersect(distance = t,
                                  point = P,
                                  normal = self.normal,
@@ -154,7 +162,7 @@ class Disk(object):
             return None
 
         contact = ml.subtract(intersect.point, self.plane.position)
-        contact = np.linalg.norm(contact)
+        contact = ml.normalize(contact)
 
         if contact > self.radius:
             return None
@@ -185,16 +193,16 @@ class AABB(object):
         halfSizes[2] = size[2] / 2
 
         # Sides
-        self.planes.append( Plane( np.add(position, (halfSizes[0],0,0)), (1,0,0), material ))
-        self.planes.append( Plane( np.add(position, (-halfSizes[0],0,0)), (-1,0,0), material ))
+        self.planes.append( Plane( ml.add(position, (halfSizes[0],0,0)), (1,0,0), material ))
+        self.planes.append( Plane( ml.add(position, (-halfSizes[0],0,0)), (-1,0,0), material ))
 
         # Up and Down
-        self.planes.append( Plane( np.add(position, (0,halfSizes[1],0)), (0,1,0), material ))
-        self.planes.append( Plane( np.add(position, (0,-halfSizes[1],0)), (0,-1,0), material ))
+        self.planes.append( Plane( ml.add(position, (0,halfSizes[1],0)), (0,1,0), material ))
+        self.planes.append( Plane( ml.add(position, (0,-halfSizes[1],0)), (0,-1,0), material ))
 
         # Front and back
-        self.planes.append( Plane( np.add(position, (0,0,halfSizes[2])), (0,0,1), material ))
-        self.planes.append( Plane( np.add(position, (0,0,-halfSizes[2])), (0,0,-1), material ))
+        self.planes.append( Plane( ml.add(position, (0,0,halfSizes[2])), (0,0,1), material ))
+        self.planes.append( Plane( ml.add(position, (0,0,-halfSizes[2])), (0,0,-1), material ))
 
         #Bounds
         self.boundsMin = [0,0,0]
